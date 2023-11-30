@@ -5,7 +5,39 @@
 {% endblock title %}
 
 {% block content %}
-    <h1>Все посты</h1>
-    {{ posts }}
+    <h2>Количество всех постов: {{ posts|length }}</h2>
+    {% if posts %}
+        <table>
+            <tr>
+                <td>Заголовок</td>
+                <td>Автор</td>
+                <td>Дата публикации</td>
+                <td>Превью</td>
+                <td>Категория</td>
+                <td>Рейтинг</td>
+            </tr>
+            {% for post in posts %}
+                <tr>
+                    <td> {{ post.title }} </td>
+                    <td> {{ post.author.user.username }} </td>
+                    <td> {{ post.create|date:'d M Y' }} </td>
+                    <td> {{ post.text|truncatewords:20 }} </td>
+                    <td> {% for category in post.category.all %}
+                            {{ category.name }}
+                         {% endfor %} </td>
+                    <td>
+                        {% if post.rating >= 3 %}
+                            <p style="color:#00ff00"> {{ post.rating }} </p>
+                        {% elif post.rating < 1 %}
+                            <p style="color:#ff0000"> {{ post.rating }} </p>
+                        {% else %}
+                            <p style="color:#0000ff"> {{ post.rating }} </p>
+                        {% endif %}
+                </tr>
+            {% endfor %}
+        </table>
+    {% else %}
+        <h2> Постов пока нет </h2>
+    {% endif %}
 {% endblock content %}
 
