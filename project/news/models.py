@@ -17,8 +17,22 @@ class Author(models.Model):
         self.rating = overall_rating
         self.save()
 
+    def __str__(self):
+        return f'{self.user}'
+
+    class Meta:
+        verbose_name = 'Автор'
+        verbose_name_plural = 'Авторы'
+
 class Category(models.Model):
     name = models.CharField(max_length=128, unique=True)
+
+    def __str__(self):
+        return f'{self.name}'
+
+    class Meta:
+        verbose_name = 'Категория'
+        verbose_name_plural = 'Категории'
 
 
 class RatingMixin:
@@ -40,7 +54,7 @@ class Post(RatingMixin, models.Model):
         (article, 'Статья'),
     ]
     type = models.CharField(max_length=2, choices=CONTENT_LIST)
-    title = models.CharField(max_length=128)
+    title = models.CharField(max_length=128, unique=True)
     author = models.ForeignKey(Author, on_delete=models.CASCADE, related_name='posts')
     category = models.ManyToManyField(Category, through='PostCategory')
     create = models.DateTimeField(auto_now_add=True)
@@ -51,12 +65,23 @@ class Post(RatingMixin, models.Model):
         return f'{self.text[:123]} ... '
 
     def __str__(self):
-        return f'{self.author}:{self.title}'
+        return f'{self.author} : {self.title}'
+
+    class Meta:
+        verbose_name = 'Пост'
+        verbose_name_plural = 'Посты'
 
 
 class PostCategory(models.Model):
     post = models.ForeignKey(Post, on_delete=models.CASCADE)
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f'Категория {self.category} к посту {self.post.title}'
+
+    class Meta:
+        verbose_name = 'КатегорииПостов'
+        verbose_name_plural = 'КатегорииПостов'
 
 
 class Comment(RatingMixin, models.Model):
@@ -65,3 +90,10 @@ class Comment(RatingMixin, models.Model):
     create = models.DateTimeField(auto_now_add=True)
     text = models.TextField()
     rating = models.IntegerField(default=0)
+
+    def __str__(self):
+        return f'Комментарий пользователя {self.user} к посту {self.post.title} (ID: {self.id})'
+
+    class Meta:
+        verbose_name = 'Комментарий'
+        verbose_name_plural = 'Комментарии'
