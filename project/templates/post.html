@@ -1,5 +1,7 @@
 {% extends 'flatpages/default.html' %}
 
+{% load custom_filters %}
+
 {% block title %}
     Post
 {% endblock title %}
@@ -19,7 +21,7 @@
                 {% endfor %} </td>
         </tr>
     </table>
-    <h3>{{ post.title }}</h3>
-    {{ post.text }}
+    <h3>{{ post.title|censor }}</h3>
+    {{ post.text|censor }}
 {% endblock content %}
 
