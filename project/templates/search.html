@@ -1,0 +1,13 @@
+{% extends 'posts.html' %}
+
+{% block count %} <h2>Количество найденных постов: {{ page_obj.paginator.count }}</h2> {% endblock count %}
+
+{% block form %}
+<form action="" method="get">
+    {{ filterset.form.as_p }}
+    <input type="submit" value="Найти">
+</form>
+{% endblock form %}
+
+
+

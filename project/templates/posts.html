@@ -7,7 +7,10 @@
 {% endblock title %}
 
 {% block content %}
-    <h2>Количество всех постов: {{ posts|length }}</h2>
+    {% block count %} <h2>Всего постов: {{ page_obj.paginator.count }}</h2> {% endblock count %}
+    {% block form %}
+
+    {% endblock form %}
     {% if posts %}
         <table>
             <tr>
@@ -20,7 +23,7 @@
             </tr>
             {% for post in posts %}
                 <tr>
-                    <td> <a href="{{ post.id }}"> {{ post.title|censor }} </a> </td>
+                    <td> <a href="{% url 'post_detail' post.id %}"> {{ post.title|censor }} </a> </td>
                     <td> {{ post.author.user.username }} </td>
                     <td> {{ post.create|date:'d M Y' }} </td>
                     <td> {{ post.text|truncatewords:20|censor }} </td>
@@ -28,12 +31,10 @@
                             {{ category.name }}
                          {% endfor %} </td>
                     <td>
-                        {% if post.rating >= 5 %}
-                            <p style="color:#00ff00"> {{ post.rating }} </p>
-                        {% elif post.rating < 5 and post.rating >= 3 %}
-                            <p style="color:#0000ff"> {{ post.rating }} </p>
-                        {% else %}
+                        {% if post.rating <= 0 %}
                             <p style="color:#ff0000"> {{ post.rating }} </p>
+                        {% else %}
+                            <p style="color:#0000ff"> {{ post.rating }} </p>
                         {% endif %}
                 </tr>
             {% endfor %}
@@ -41,5 +42,24 @@
     {% else %}
         <h2> Постов пока нет </h2>
     {% endif %}
+
+{% if page_obj.has_previous %}
+    <a href="?page=1">1</a>
+    {% if page_obj.previous_page_number != 1 %}
+        ...
+        <a href="?page={{ page_obj.previous_page_number }}">{{ page_obj.previous_page_number }}</a>
+    {% endif %}
+{% endif %}
+
+{{ page_obj.number }}
+
+{% if page_obj.has_next %}
+    <a href="?page={{ page_obj.next_page_number }}">{{ page_obj.next_page_number }}</a>
+    {% if paginator.num_pages != page_obj.next_page %}
+        ...
+        <a href="?page={{ page_obj.paginator.num_pages }}">{{ page_obj.paginator.num_pages }}</a>
+    {% endif %}
+{% endif %}
+
 {% endblock content %}
 
