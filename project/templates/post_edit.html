@@ -1,0 +1,17 @@
+{% extends 'flatpages/default.html' %}
+
+{% block content %}
+
+{% if from == 'update' %}
+    <h1>Редактирование</h1>
+{% else %}
+    <h1>Создание нового поста</h1>
+{% endif %}
+<hr>
+<form action="" method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <input type="submit" value="Save" />
+</form>
+
+{% endblock content %}

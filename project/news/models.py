@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.urls import reverse
 
 
 class Author(models.Model):
@@ -23,6 +24,7 @@ class Author(models.Model):
     class Meta:
         verbose_name = 'Автор'
         verbose_name_plural = 'Авторы'
+
 
 class Category(models.Model):
     name = models.CharField(max_length=128, unique=True)
@@ -66,6 +68,12 @@ class Post(RatingMixin, models.Model):
 
     def __str__(self):
         return f'{self.author} : {self.title}'
+
+    def get_absolute_url(self):
+        if self.type == 'NW':
+            return reverse('news_detail', args=[str(self.id)])
+        else:
+            return reverse('articles_detail', args=[str(self.id)])
 
     class Meta:
         verbose_name = 'Пост'

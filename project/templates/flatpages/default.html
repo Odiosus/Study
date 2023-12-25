@@ -10,28 +10,70 @@
         {% load static %}
         <!-- Core theme CSS (includes Bootstrap)-->
         <link href="{% static 'css/styles.css' %}" rel="stylesheet" />
+        <style>
+            .dropbtn {
+              background-color: #black;
+              color: black;
+              padding: 16px;
+              font-size: 16px;
+              border: none;
+            }
+
+            .dropdown {
+              position: relative;
+              display: inline-block;
+            }
+
+            .dropdown-content {
+              display: none;
+              position: absolute;
+              background-color: var(--bs-body-color);
+              min-width: 160px;
+              box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+              z-index: 1;
+            }
+
+            .dropdown-content a {
+              color: #f1f1f1;
+              padding: 12px 16px;
+              text-decoration: none;
+              display: block;
+            }
+
+            .dropdown-content a:hover {background-color: black;}
+
+            .dropdown:hover .dropdown-content {display: block;}
+
+            .dropdown:hover .dropbtn {background-color: black;}
+
+        </style>
     </head>
     <body>
         <!-- Responsive navbar-->
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark static-top">
             <div class="container">
-                <a class="navbar-brand" href="/admin/">АДМИНКА</a>
-                <button class="navbar-toggler" type="button" data-toggle="collapse"
-                        data-target="#navbarResponsive"
-                        aria-controls="navbarResponsive" aria-expanded="false"
-                        aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
                 <div class="collapse navbar-collapse" id="navbarResponsive">
                     <ul class="navbar-nav ml-auto">
-                        <li class="nav-item active">
-                            <a class="nav-link" href="#">Home</a>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/posts/">Все посты</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="/about/">About</a>
+                            <a class="nav-link" href="/posts/search/">Поиск</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="/contacts/">Contact</a>
+                            <a class="nav-link" href="/posts/news/">Новости</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/posts/articles/">Статьи</a>
+                        </li>
+                        <li class="nav-item">
+                            <div class="dropdown">
+                                <a class="nav-link" href="#">Создать</a>
+                                <div class="dropdown-content">
+                                  <a href="/posts/news/create/">Новость</a>
+                                  <a href="/posts/articles/create/">Статья</a>
+                                </div>
+                            </div>
                         </li>
                     </ul>
                 </div>

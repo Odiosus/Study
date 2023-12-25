@@ -1,6 +1,7 @@
 {% extends 'flatpages/default.html' %}
 
 {% load custom_filters %}
+{% load static %}
 
 {% block title %}
     Post
@@ -20,7 +21,12 @@
                 {{ cat.name }}
                 {% endfor %} </td>
         </tr>
+        <br>
+        <a title="Удалить" href="delete/"><img src="{% static 'css/icons/delete.png' %}" width="50" height="40" align="right"></a>
+        <a title="Редактировать" href="update/"><img src="{% static 'css/icons/edit.png' %}" width="50" height="40" align="right"></a>
     </table>
+    <br>
+    <br>
     <h3>{{ post.title|censor }}</h3>
     {{ post.text|censor }}
 {% endblock content %}
