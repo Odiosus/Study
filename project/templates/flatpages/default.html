@@ -66,15 +66,17 @@
                         <li class="nav-item">
                             <a class="nav-link" href="/posts/articles/">Статьи</a>
                         </li>
-                        <li class="nav-item">
-                            <div class="dropdown">
-                                <a class="nav-link" href="#">Создать</a>
-                                <div class="dropdown-content">
-                                  <a href="/posts/news/create/">Новость</a>
-                                  <a href="/posts/articles/create/">Статья</a>
+                        {% if perms.news.add_post %}
+                            <li class="nav-item">
+                                <div class="dropdown">
+                                    <a class="nav-link" href="#">Создать</a>
+                                    <div class="dropdown-content">
+                                      <a href="/posts/news/create/">Новость</a>
+                                      <a href="/posts/articles/create/">Статья</a>
+                                    </div>
                                 </div>
-                            </div>
-                        </li>
+                            </li>
+                        {% endif %}
                     </ul>
                 </div>
             </div>

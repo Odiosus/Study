@@ -22,8 +22,12 @@
                 {% endfor %} </td>
         </tr>
         <br>
-        <a title="Удалить" href="delete/"><img src="{% static 'css/icons/delete.png' %}" width="50" height="40" align="right"></a>
-        <a title="Редактировать" href="update/"><img src="{% static 'css/icons/edit.png' %}" width="50" height="40" align="right"></a>
+        {% if perms.news.delete_post %}
+            <a title="Удалить" href="delete/"><img src="{% static 'css/icons/delete.png' %}" width="50" height="40" align="right"></a>
+        {% endif %}
+        {% if perms.news.change_post %}
+            <a title="Редактировать" href="update/"><img src="{% static 'css/icons/edit.png' %}" width="50" height="40" align="right"></a>
+        {% endif %}
     </table>
     <br>
     <br>
