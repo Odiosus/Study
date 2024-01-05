@@ -4,7 +4,7 @@ from django.urls import reverse
 
 
 class Author(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    authorUser = models.OneToOneField(User, on_delete=models.CASCADE)
     rating = models.IntegerField(default=0)
 
     def update_rating(self):
@@ -13,13 +13,13 @@ class Author(models.Model):
             overall_rating += (i.rating*3)
             for j in i.comments.all():
                 overall_rating += j.rating
-        for k in Comment.objects.filter(user = self.user.id):
+        for k in Comment.objects.filter(user = self.authorUser.id):
             overall_rating += k.rating
         self.rating = overall_rating
         self.save()
 
     def __str__(self):
-        return f'{self.user}'
+        return f'{self.authorUser}'
 
     class Meta:
         verbose_name = 'Автор'

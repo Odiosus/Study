@@ -81,8 +81,13 @@
                             </li>
                         {% endif %}
                         {% if user.is_authenticated %}
+                            {% if not is_author %}
+                                <li class="nav-item">
+                                    <a class="nav-link" href="{% url 'upgrade_user' %}">Стать автором</a>
+                                </li>
+                            {% endif %}
                             <li class="nav-item">
-                                <a class="nav-link" href="/accounts/logout/">Выйти</a>
+                                <a class="nav-link" href="/accounts/logout/"> {{ user.username }} (Выйти)</a>
                             </li>
                         {% else %}
                             <li class="nav-item">

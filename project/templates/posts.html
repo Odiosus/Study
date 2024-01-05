@@ -33,7 +33,7 @@
             {% for post in posts %}
                 <tr>
                     <td> <a href="{{ post.get_absolute_url }}"> {{ post.title|censor }} </a> </td>
-                    <td> {{ post.author.user.username }} </td>
+                    <td> {{ post.author.authorUser.username }} </td>
                     <td> {{ post.create|date:'d M Y' }} </td>
                     <td> {{ post.text|truncatewords:20|censor }} </td>
                     <td> {% for category in post.category.all %}
