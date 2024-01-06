@@ -39,12 +39,12 @@ class PostFilter(FilterSet):
         empty_label='Любой',
         )
 
-    # author = ModelChoiceFilter(              Буду переписывать, так как авторов может быть огромное количество,
-    #     field_name='author',                 и список может сильно растянуться, лучше производить поиск
-    #     queryset=Author.objects.all(),       с использованием CharFilter
-    #     label='Автор',
-    #     empty_label='Любой',
-    # )
+    author = ModelChoiceFilter(              # Буду переписывать, так как авторов (так же как и категорий по сути..)
+        field_name='author',                 # может быть огромное количество,
+        queryset=Author.objects.all(),       # и список может сильно растянуться, лучше производить поиск
+        label='Автор',                       # с использованием CharFilter
+        empty_label='Любой',
+    )
 
 
 

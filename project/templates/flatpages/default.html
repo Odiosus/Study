@@ -81,7 +81,7 @@
                             </li>
                         {% endif %}
                         {% if user.is_authenticated %}
-                            {% if not is_author %}
+                            {% if not 'authors' in group_list %}
                                 <li class="nav-item">
                                     <a class="nav-link" href="{% url 'upgrade_user' %}">Стать автором</a>
                                 </li>

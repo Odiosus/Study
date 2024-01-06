@@ -15,17 +15,15 @@
             <td width="100" height="20">Категория</td>
         </tr>
         <tr>
-            <td width="100" height="20"> {{ post.author.user.username }} </td>
+            <td width="100" height="20"> {{ post.author.authorUser.username }} </td>
             <td width="100" height="20"> {{ post.create|date:'d M Y' }} </td>
             <td width="100" height="20"> {% for cat in post.category.all %}
                 {{ cat.name }}
                 {% endfor %} </td>
         </tr>
         <br>
-        {% if perms.news.delete_post %}
+        {% if 'managers' in group_list or user.username == post.author.authorUser.username %}
             <a title="Удалить" href="delete/"><img src="{% static 'css/icons/delete.png' %}" width="50" height="40" align="right"></a>
-        {% endif %}
-        {% if perms.news.change_post %}
             <a title="Редактировать" href="update/"><img src="{% static 'css/icons/edit.png' %}" width="50" height="40" align="right"></a>
         {% endif %}
     </table>

@@ -7,7 +7,11 @@ class PostForm(forms.ModelForm):
         model = Post
         fields = [
             'title',
-            'author',
+            # 'author',
             'category',
             'text',
         ]
+
+
+class PostFormForStaff(PostForm):
+    PostForm.Meta.fields.append('author')

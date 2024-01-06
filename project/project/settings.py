@@ -76,6 +76,8 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+
+                'context_processors.get_group_list',
             ],
         },
     },
@@ -150,7 +152,7 @@ AUTHENTICATION_BACKENDS = [
 
 ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_UNIQUE_EMAIL = True
-ACCOUNT_USERNAME_REQUIRED = False
+ACCOUNT_USERNAME_REQUIRED = True
 ACCOUNT_AUTHENTICATION_METHOD = 'username'
 ACCOUNT_EMAIL_VERIFICATION = 'none'
 
