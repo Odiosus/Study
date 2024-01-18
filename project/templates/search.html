@@ -1,6 +1,6 @@
 {% extends 'posts.html' %}
 
-{% block count %} <h2>Количество найденных постов: {{ page_obj.paginator.count }}</h2> {% endblock count %}
+{% block count %} (Всего найдено постов: {{ page_obj.paginator.count }}) {% endblock count %}
 
 {% block form %}
 <form action="" method="get">

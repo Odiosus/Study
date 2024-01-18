@@ -15,7 +15,7 @@ class PostList(ListView):
     ordering = '-create'
     template_name = 'posts.html'
     context_object_name = 'posts'
-    paginate_by = 3
+    paginate_by = 5
 
     def get_queryset(self):
         queryset = super().get_queryset()
@@ -25,6 +25,9 @@ class PostList(ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['filterset'] = self.filterset
+        context['category_list'] = Category.objects.order_by('name')
+        context['last_comment_list'] = Comment.objects.order_by('-create')[:4]
+        pprint(context)
         return context
 
 

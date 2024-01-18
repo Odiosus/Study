@@ -23,15 +23,28 @@ class PostFilter(FilterSet):
         label='Категория',
     )
 
-    create = DateTimeFilter(
+    create_exact = DateTimeFilter(
         field_name='create',
-        lookup_expr='gt',
+        lookup_expr="date",
         widget=DateTimeInput(
-            format='%Y-%m-%dT%H:%M',
-            attrs={'type': 'datetime-local'},
+            format='%Y-%m-%dT',
+            attrs={'type': 'date'},
         ),
-        label='Начиная с:',
+        label='Точная дата',
     )
+
+    create_ = DateTimeFilter(
+        field_name='create',
+        lookup_expr="date__gt",
+        widget=DateTimeInput(
+            format='%Y-%m-%dT',
+            attrs={'type': 'date'},
+        ),
+        label='Начиная с',
+    )
+
+
+
     type = ChoiceFilter(
         field_name='type',
         choices=Post.CONTENT_LIST,

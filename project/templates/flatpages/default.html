@@ -2,116 +2,74 @@
 <html lang="en">
     <head>
         <meta charset="utf-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-        <meta name="description" content="" />
-        <meta name="author" content="" />
         <title>News portal</title>
-        <!-- Favicon-->
         {% load static %}
-        <!-- Core theme CSS (includes Bootstrap)-->
-        <link href="{% static 'css/styles.css' %}" rel="stylesheet" />
-        <style>
-            .right {
-              float: right;
-            }
-            .dropbtn {
-              background-color: #black;
-              color: black;
-              padding: 16px;
-              font-size: 16px;
-              border: none;
-            }
+        <link rel="stylesheet" type='text/css' href="{% static 'css/style.css' %}"  />
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700;800&display=swap" rel="stylesheet">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+        <script defer src="{% static 'script.js' %}"></script>
 
-            .dropdown {
-              position: relative;
-              display: inline-block;
-            }
-
-            .dropdown-content {
-              display: none;
-              position: absolute;
-              background-color: var(--bs-body-color);
-              min-width: 160px;
-              box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-              z-index: 1;
-            }
-
-            .dropdown-content a {
-              color: #f1f1f1;
-              padding: 12px 16px;
-              text-decoration: none;
-              display: block;
-            }
-
-            .dropdown-content a:hover {background-color: black;}
-
-            .dropdown:hover .dropdown-content {display: block;}
-
-            .dropdown:hover .dropbtn {background-color: black;}
-
-        </style>
     </head>
     <body>
-        <!-- Responsive navbar-->
-        <nav class="navbar navbar-expand-lg navbar-dark bg-dark static-top">
-            <div class="container">
-                <div class="collapse navbar-collapse" id="navbarResponsive">
-                    <ul class="navbar-nav ml-auto">
-                        <li class="nav-item">
-                            <a class="nav-link" href="/posts/">Все посты</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="/posts/search/">Поиск</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="/posts/news/">Новости</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="/posts/articles/">Статьи</a>
-                        </li>
-                        {% if perms.news.add_post %}
-                            <li class="nav-item">
-                                <div class="dropdown">
-                                    <a class="nav-link" href="#">Создать</a>
-                                    <div class="dropdown-content">
-                                      <a href="/posts/news/create/">Новость</a>
-                                      <a href="/posts/articles/create/">Статья</a>
-                                    </div>
-                                </div>
-                            </li>
-                        {% endif %}
-                        {% if user.is_authenticated %}
-                            {% if not 'authors' in group_list %}
-                                <li class="nav-item">
-                                    <a class="nav-link" href="{% url 'upgrade_user' %}">Стать автором</a>
-                                </li>
-                            {% endif %}
-                            <li class="nav-item">
-                                <a class="nav-link" href="/accounts/logout/"> {{ user.username }} (Выйти)</a>
-                            </li>
-                        {% else %}
-                            <li class="nav-item">
-                                <a class="nav-link" href="/accounts/login/">Войти</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="/accounts/signup/">Зарегистрироваться</a>
-                            </li>
-                        {% endif %}
-                    </ul>
-                </div>
+        <header class="header">
+            <div>
+                <ul class="menu">
+                {% if user.is_authenticated %}
+                    <li><b>{{ user.username }}</b></li>
+                    <li><form action="/accounts/logout/" target="_self">
+                        <button class="btn" type="submit">(Выйти)</button>
+                    </form></li>
+                {% else %}
+                    <li><form action="/accounts/login/" target="_self">
+                        <button class="btn" type="submit">Войти</button>
+                    </form></li>
+                    <li><form action="/accounts/signup/" target="_self">
+                        <button class="btn" type="submit">Регистарция</button>
+                    </form></li>
+                {% endif %}
+                </ul>
             </div>
-        </nav>
-        <!-- Page content-->
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-12 text-center">
-                    {% block content %}
-                    {{ flatpage.content }}
-                    {% endblock content %}
-                </div>
+            <hr>
+            <div>
+                <ul class="menu">
+                    <li><form action="/posts/" target="_self">
+                        <button id="b1" class="btn" type="submit">Все посты</button>
+                    </form></li>
+                    <li><form action="/posts/search/" target="_self">
+                        <button id="b2" class="btn" type="submit">Поиск</button>
+                    </form></li>
+                    <li><form action="/posts/news/" target="_self">
+                        <button id="b3" class="btn" type="submit">Новости</button>
+                    </form></li>
+                    <li><form action="/posts/articles/" target="_self">
+                        <button id="b4" class="btn" type="submit">Статьи</button>
+                    </form></li>
+                    {% if perms.news.add_post %}
+                    <li>
+                        <div class="dropdown">
+                            <button id="b5" class="btn" type="submit">Создать</button>
+                            <div class="dropdown-content">
+                                <form action="/posts/news/create/" target="_self">
+                                    <button id="b6" class="btn">Новость</button></form>
+                                <form action="/posts/articles/create/" target="_self">
+                                    <button id="b7" class="btn">Статья</button></form>
+                            </div>
+                        </div>
+                    </li>
+                    {% endif %}
+                    {% if user.is_authenticated and not 'authors' in group_list %}
+                        <li><form action="{% url 'upgrade_user' %}" target="_self">
+                            <button class="btn" type="submit">Стать автором</button>
+                        </form></li>
+                    {% endif %}
+                </ul>
             </div>
-        </div>
-        <!-- Bootstrap core JS-->
-        <!-- Core theme JS-->
+        </header>
+
+        {% block content %}
+        {{ flatpage.content }}
+        {% endblock content %}
     </body>
 </html>

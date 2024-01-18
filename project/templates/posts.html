@@ -8,15 +8,53 @@
 {% endblock title %}
 
 {% block content %}
-    <br>
-    {% block count %} <h2>Всего {% if from == 'news' %}
-                                    новостей
-                                {% elif from == 'articles' %}
-                                    статей
-                                {% else %}
-                                    постов
-                                {% endif %}
-                                : {{ page_obj.paginator.count }}</h2> {% endblock count %}
+<div class="wrapper" xmlns="http://www.w3.org/1999/html">
+        <div class="top-line category">
+            <h4 align="center">Категории</h4><br>
+            {% for category in category_list %}
+                <a id="a{{ category.id }}" class="aCont" href="?{% url_replace category=category.id %}">
+                    {{ category.name }}</a><br>
+            {% endfor %}
+        </div>
+        <div class="centre">
+            <div class="top-line">
+                <h2> {{ posts.first.title|censor }}</h2>
+                <div class="who">
+                    <p>{{ posts.first.create|date:'d E Y' }}</p>
+                    <p>  Автор:</p>
+                    <a id="delbN" class="aCont" href="http://127.0.0.1:8000/posts/search/?author={{ posts.first.author.id }}">
+                        {{ posts.first.author.authorUser.username }} </a>
+
+                </div>
+                <p>{{ posts.first.text|truncatewords:60|censor }}</p>
+                <div class="more">
+                    <a id="b8" class="aCont" href="{{ posts.first.get_absolute_url }}">Читать подробнее</a>
+                    <p>Рейтинг: {{ posts.first.rating }}</p>
+                </div>
+            </div>
+            <div class="centre-bottom">
+                {% for post in posts|slice:"1:5" %}
+                    <div class="top-line">
+                        <h4> {{ post.title|censor }}</h4>
+                        <div class="who-bottom">
+                            <p>{{ post.create|date:'d E Y' }}</p>
+                            <p>Рейтинг: {{ post.rating }}</p>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+        <div class="top-line comments-list">
+            <h4 align="center">Последние комментарии</h4>
+
+            {% for comment in last_comment_list %}
+                <div class="size-comments-list">
+                    <p class="comment-top">"{{ comment.text|truncatewords:5|censor }}"</p>
+                    <p class="author-comment" align="right">{{ comment.user.username|truncatechars:15 }}</p>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
     {% block form %}
     {% endblock form %}
     <br>
@@ -39,12 +77,7 @@
                     <td> {% for category in post.category.all %}
                             {{ category.name }}
                          {% endfor %} </td>
-                    <td>
-                        {% if post.rating <= 0 %}
-                            <p style="color:#ff0000"> {{ post.rating }} </p>
-                        {% else %}
-                            <p style="color:#0000ff"> {{ post.rating }} </p>
-                        {% endif %}
+                    <td> {{ post.rating }} </td>
                 </tr>
             {% endfor %}
         </table>
@@ -69,6 +102,17 @@
         <a href="?{% url_replace page=page_obj.paginator.num_pages %}">{{ page_obj.paginator.num_pages }}</a>
     {% endif %}
 {% endif %}
+
+{% block count %}
+(Всего {% if from == 'news' %}
+        новостей
+      {% elif from == 'articles' %}
+        статей
+      {% else %}
+        постов
+      {% endif %}
+        : {{ page_obj.paginator.count }})
+{% endblock count %}
 
 {% endblock content %}
 
