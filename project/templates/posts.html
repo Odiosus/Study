@@ -8,37 +8,60 @@
 {% endblock title %}
 
 {% block content %}
-<div class="wrapper" xmlns="http://www.w3.org/1999/html">
-        <div class="top-line category">
+    <div class="wrapper">
+        <div class="top-line categories">
             <h4 align="center">Категории</h4><br>
             {% for category in category_list %}
-                <a id="a{{ category.id }}" class="aCont" href="?{% url_replace category=category.id %}">
-                    {{ category.name }}</a><br>
+                <div class="category">
+                    <a id="a{{ category.id }}" class="aCont" href="?{% url_replace category=category.id %}">
+                    {{ category.name }}</a>
+                </div>
             {% endfor %}
         </div>
         <div class="centre">
             <div class="top-line">
+                {% if posts %}
                 <h2> {{ posts.first.title|censor }}</h2>
                 <div class="who">
                     <p>{{ posts.first.create|date:'d E Y' }}</p>
                     <p>  Автор:</p>
-                    <a id="delbN" class="aCont" href="http://127.0.0.1:8000/posts/search/?author={{ posts.first.author.id }}">
+                    <a class="btn hiddenDecoration" id='-1' href="http://127.0.0.1:8000/posts/search/?author={{ posts.first.author.id }}">
                         {{ posts.first.author.authorUser.username }} </a>
-
+<!--                    onclick="delActiveButton()"-->
                 </div>
-                <p>{{ posts.first.text|truncatewords:60|censor }}</p>
+                <p>{{ posts.first.text|truncatewords:110|censor }}</p>
                 <div class="more">
-                    <a id="b8" class="aCont" href="{{ posts.first.get_absolute_url }}">Читать подробнее</a>
+                    <a id="b8" class="btn hiddenDecoration" href="{{ posts.first.get_absolute_url }}">Читать подробнее</a>
                     <p>Рейтинг: {{ posts.first.rating }}</p>
                 </div>
+                {% else %}
+                    <div class="not-found">
+                        <h2> По такому запросу постов пока нет </h2>
+                    </div>
+                {% endif %}
             </div>
             <div class="centre-bottom">
                 {% for post in posts|slice:"1:5" %}
                     <div class="top-line">
-                        <h4> {{ post.title|censor }}</h4>
-                        <div class="who-bottom">
-                            <p>{{ post.create|date:'d E Y' }}</p>
-                            <p>Рейтинг: {{ post.rating }}</p>
+                        <div class="wrapper-bottom-header">
+                            <div class="title-bottom">
+                                <p>{{ post.title|censor }}</p>
+                            </div>
+                            <div class="who-bottom">
+                                <p>{{ post.create|date:'d E Y' }}</p>
+                                <p>Рейтинг: {{ post.rating }}</p>
+                            </div>
+                            <div class="author-bottom">
+                                <a class="btn hiddenDecoration" id='{{ post.author.authorUser.id }}'
+                                   href="http://127.0.0.1:8000/posts/search/?author={{ post.author.id }}">
+                            {{ post.author.authorUser.username|truncatechars:20|censor }} </a>
+                            </div>
+                        </div>
+                        <div class="text-bottom">
+                            <p>{{ post.text|truncatewords:20|censor }}</p>
+                        </div>
+                        <div class="centre-bottom-more">
+                            <a id="{{ post.id }}" class="btn hiddenDecoration" href="{{ post.get_absolute_url }}">Читать подробнее</a>
                         </div>
                     </div>
                 {% endfor %}
@@ -57,62 +80,40 @@
     </div>
     {% block form %}
     {% endblock form %}
-    <br>
-    {% if posts %}
-        <table>
-            <tr>
-                <td>Заголовок</td>
-                <td>Автор</td>
-                <td>Дата публикации</td>
-                <td>Превью</td>
-                <td>Категория</td>
-                <td>Рейтинг</td>
-            </tr>
-            {% for post in posts %}
-                <tr>
-                    <td> <a href="{{ post.get_absolute_url }}"> {{ post.title|censor }} </a> </td>
-                    <td> {{ post.author.authorUser.username }} </td>
-                    <td> {{ post.create|date:'d M Y' }} </td>
-                    <td> {{ post.text|truncatewords:20|censor }} </td>
-                    <td> {% for category in post.category.all %}
-                            {{ category.name }}
-                         {% endfor %} </td>
-                    <td> {{ post.rating }} </td>
-                </tr>
-            {% endfor %}
-        </table>
-    {% else %}
-        <h2> Постов пока нет </h2>
-    {% endif %}
+    <div class="pagination">
+        <div class="pagination-content">
 
-{% if page_obj.has_previous %}
-    <a href="?{% url_replace page=1 %}">1</a>
-    {% if page_obj.previous_page_number != 1 %}
-        ...
-        <a href="?{% url_replace page=page_obj.previous_page_number %}">{{ page_obj.previous_page_number }}</a>
-    {% endif %}
-{% endif %}
+            {% if page_obj.has_previous %}
+                <a href="?{% url_replace page=1 %}">1</a>
+                {% if page_obj.previous_page_number != 1 %}
+                    ...
+                    <a href="?{% url_replace page=page_obj.previous_page_number %}">{{ page_obj.previous_page_number }}</a>
+                {% endif %}
+            {% endif %}
 
-{{ page_obj.number }}
+            <p class="current-page-number">{{ page_obj.number }}<p>
 
-{% if page_obj.has_next %}
-    <a href="?{% url_replace page=page_obj.next_page_number %}">{{ page_obj.next_page_number }}</a>
-    {% if paginator.num_pages != page_obj.next_page %}
-        ...
-        <a href="?{% url_replace page=page_obj.paginator.num_pages %}">{{ page_obj.paginator.num_pages }}</a>
-    {% endif %}
-{% endif %}
+            {% if page_obj.has_next %}
+                <a href="?{% url_replace page=page_obj.next_page_number %}">{{ page_obj.next_page_number }}</a>
+                {% if paginator.num_pages != page_obj.next_page %}
+                    ...
+                    <a href="?{% url_replace page=page_obj.paginator.num_pages %}">{{ page_obj.paginator.num_pages }}</a>
+                {% endif %}
+            {% endif %}
 
-{% block count %}
-(Всего {% if from == 'news' %}
-        новостей
-      {% elif from == 'articles' %}
-        статей
-      {% else %}
-        постов
-      {% endif %}
-        : {{ page_obj.paginator.count }})
-{% endblock count %}
+            {% block count %}
+            (Всего {% if from == 'news' %}
+                    новостей
+                  {% elif from == 'articles' %}
+                    статей
+                  {% else %}
+                    постов
+                  {% endif %}
+                    : {{ page_obj.paginator.count }})
+            {% endblock count %}
+
+        </div>
+    </div>
 
 {% endblock content %}
 

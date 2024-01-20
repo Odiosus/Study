@@ -7,10 +7,11 @@ body{
   font-family: 'Montserrat', sans-serif;
   line-height: 1.5;
   font-size: 1rem;
-  margin-left: 150px;
-  margin-right: 150px;
+  margin-left: 100px;
+  margin-right: 100px;
   color: #2C2C2C;
 }
+
 
 .header{
   display: flex;
@@ -42,6 +43,7 @@ body{
   padding: 5px 30px;
   color: #2C2C2C;
   cursor: pointer;
+  text-decoration: none;
 }
 
 .btn:hover {
@@ -67,6 +69,12 @@ button {
   transition: 0s;
 }
 
+.hiddenDecoration.active {
+  color: #2C2C2C;
+  font-weight: bold;
+  background-color: #d9d9d9;
+}
+
 .dropdown {
   position: relative;
   display: inline-block;
@@ -84,6 +92,7 @@ button {
   border-radius: 12px;
   border: none;
 }
+
 .dropdown-content a:hover {background-color: #d9d9d9;}
 .dropdown:hover .dropdown-content {display: block;}
 
@@ -99,20 +108,40 @@ button {
   margin: 5px;
   border-radius: 12px;
   border: none;
-  padding: 15px 20px;
-  display: block;
+  padding: 12px 17px;
+  display: flex;
+  flex-direction: column;
   }
 
+.categories{
+  width: 13%;
+  padding-left: 25px;
+  padding-bottom: 20px;
+}
+
 .category{
-  width: 12%;
+  padding-top: 5px;
 }
 
 .centre{
-  width: 66%;
+  width: 68%;
 }
 
 .comments-list{
-  width: 12%;
+  width: 13%;
+}
+
+@media screen and (max-width:1200px) {
+  .comments-list {
+      display: none;
+  }
+  .category{
+    width: 18%;
+  }
+  .centre{
+    width: 75%;
+  }
+
 }
 
 .aCont{
@@ -129,14 +158,6 @@ button {
   font-weight: bold;
 }
 
-.centre-bottom{
-  display: flex;
-}
-
-.centre-bottom div{
-  width: 23%;
-}
-
 .first-post a{
   text-decoration: none;
   color: #2C2C2C;
@@ -148,15 +169,19 @@ button {
 
 .who{
   display: flex;
-  vertical-align: middle;
+  align-items: baseline;
 }
 
 .more{
   display: flex;
+  justify-content: space-between;
+  align-items: baseline;
 }
 
-.more{
-  justify-content: space-between;
+.not-found{
+  display: flex;
+  min-height: 400px;
+  justify-content: center;
 }
 
 :is(.who p, .who a, .more a, .more p){
@@ -164,20 +189,112 @@ button {
   margin-top: 20px;
   margin-bottom: 20px;
   font-size: 14px;
+  padding-left: 0px;
 }
 
 .who a{
   width: auto;
+  color: #2C2C2C;
+  text-decoration: none;
 
 }
 
+.centre-bottom{
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.centre-bottom div{
+  flex: 1;
+}
+
 .who-bottom{
-  font-size: 14px;
+  font-size: 12px;
   display: flex;
   justify-content: space-between;
+  align-items: flex-start;
+  width: auto;
+  padding-top: 10px;
+}
+
+.text-bottom{
+  margin-top: 10px;
+  font-size: 14px;
+}
+
+#b10{
+  align-items: end;
+  font-size: 12px;
+}
+
+.hiddenDecoration {
+  text-decoration: none;
+  font-size: 12px;
+  padding-left: 0px;
+  padding-bottom: 0px;
+  color: #2C2C2C;
+}
+
+.hiddenDecoration:hover {
+  font-weight: bold;
+}
+
+.title-bottom {
+  height: 40px;
+  overflow: hidden;
+}
+
+.title-bottom p{
+  font-weight: bold;
+  font-size: 12px;
+}
+
+.centre-bottom-more{
+  padding-top: 10px;
+  display: grid;
+  align-items: end;
+  min-height: 5%;
+}
+
+.wrapper-bottom-header{
+  display: block;
+  justify-content: space-between;
+}
+
+.wrapper-bottom-header div{
+  display: flex;
 }
 
 .comments-list div{
   margin-top: 18px;
   font-size: 14px;
+}
+
+.pagination {
+  display: flex;
+  justify-content: space-around;
+}
+
+.pagination-content{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.pagination-content a{
+  padding-left: 5px;
+  padding-right: 5px;
+  text-decoration: none;
+  color: #2C2C2C;
+  cursor: pointer;
+}
+
+.pagination-content a:hover{
+  font-weight: bold;
+}
+
+.current-page-number{
+  font-size: large;
+  padding: 3px;
+  font-weight: bold;
 }
