@@ -17,3 +17,8 @@ def censor(text):
                 text_list[i] = len(text_list[i]) * '*'
     return ' '.join(text_list)
 
+
+@register.filter()
+def get_subscribers(category):
+    sub_list = category.subscriptions.values_list('user_id', flat=True)
+    return sub_list

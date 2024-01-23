@@ -1,5 +1,5 @@
 from django.contrib.auth.models import Group
-from django.shortcuts import redirect
+from django.shortcuts import redirect, render
 from django.views.generic import ListView, DetailView, CreateView, DeleteView, UpdateView
 from .models import *
 from .forms import *
@@ -8,6 +8,9 @@ from pprint import pprint
 from django.urls import reverse_lazy
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.contrib.auth.decorators import login_required
+from django.db.models import Exists, OuterRef
+from django.views.decorators.csrf import csrf_protect
+
 
 
 class PostList(ListView):
@@ -129,3 +132,23 @@ def upgrade_user(request):
         group.user_set.add(user)
         Author.objects.create(authorUser=user)
     return redirect('/posts')
+
+
+@login_required
+@csrf_protect
+def subscription(request):
+    if request.method == 'POST':
+        category = Category.objects.get(id=(request.POST.get('category_id')))
+        action = request.POST.get('action')
+        if action == 'Subscribe':
+            Subscriptions.objects.create(user=request.user, category=category)
+        elif action == 'Unsubscribe':
+            Subscriptions.objects.get(user=request.user, category=category).delete()
+
+    categories = Category.objects.all()
+
+    return render(
+        request,
+        'subscriptions.html',
+        {'categories': categories},
+    )
