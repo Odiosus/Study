@@ -6,29 +6,30 @@ from apscheduler.triggers.cron import CronTrigger
 from django.conf import settings
 from django.core.mail import mail_managers, EmailMultiAlternatives
 from django.core.management.base import BaseCommand
-from django.shortcuts import get_object_or_404
 from django.template.loader import render_to_string
 from django_apscheduler import util
 from django_apscheduler.jobstores import DjangoJobStore
 from django_apscheduler.models import DjangoJobExecution
 
-from news.models import Post, Category
+from news.models import Post
+from django.utils import timezone
 
 logger = logging.getLogger(__name__)
 
 
 def my_job():
-    today = datetime.datetime.now()
+    today = timezone.now()
     last_week = today - datetime.timedelta(days=7)
     posts = Post.objects.filter(create__gte=last_week)
 
     subscribers = []
-    for i in posts:                                                # Цикл по всем постам за прошедшую неделю
-        for j in i.categories__category:                           # В каждом посте (через related_name='categories' в модели PostCategory)
-            for k in get_object_or_404(Category, id=j).get_sub():  # получаем все объекты модели PostCategory, в которых есть данный пост
-                subscribers.append(k.email)                        # Далее через двойное подчеркивание находим id категорий в этих объектах PostCategory
-                                                                   # Находим категории по этим id, и через функцию модели Category (get_sub())
-                                                                   # Находим наших подписчиков и добавляем их email в список подписчиков
+    for i in posts:
+        for j in i.category.all():
+            for k in j.get_sub():
+                subscribers.append(k.email)
+
+    subscribers = set(subscribers)
+
     html_content = render_to_string(
         'posts_for_week.html',
         {
@@ -42,7 +43,7 @@ def my_job():
             subject='Статьи за неделю',
             body='',
             from_email=settings.DEFAULT_FROM_EMAIL,
-            to=subscribe,
+            to=[subscribe],
         )
         msg.attach_alternative(html_content, 'text/html')
         msg.send()
@@ -62,7 +63,7 @@ class Command(BaseCommand):
 
         scheduler.add_job(
             my_job,
-            trigger=CronTrigger(second='*/10'),  #day_of_week="fri", hour="18", minute="00"
+            trigger=CronTrigger(day_of_week="fri", hour="18", minute="00"),  #second='*/10'  day_of_week="fri", hour="18", minute="00"
             id="my_job",  # The `id` assigned to each job MUST be unique
             max_instances=1,
             replace_existing=True,

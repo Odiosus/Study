@@ -144,7 +144,7 @@ def subscription(request):
         elif action == 'Unsubscribe':
             Subscriptions.objects.get(user=request.user, category=category).delete()
 
-    categories = Category.objects.all()
+    categories = Category.objects.all().order_by('name')
 
     return render(
         request,

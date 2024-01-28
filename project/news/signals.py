@@ -43,6 +43,5 @@ def new_post(sender, instance, **kwargs):
                 subscribers.append(user)
 
         subscribers = set(subscribers)
-        print(categories)
 
         notify(instance.preview(), instance.title, subscribers, absolute_url)
