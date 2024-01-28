@@ -29,6 +29,12 @@ class Author(models.Model):
 class Category(models.Model):
     name = models.CharField(max_length=128, unique=True)
 
+    def get_sub(self):
+        sub_list = []
+        for user_id in self.subscriptions.values_list('user', flat=True):
+            sub_list.append(User.objects.get(id=user_id))
+        return sub_list
+
     def __str__(self):
         return f'{self.name}'
 
@@ -81,7 +87,7 @@ class Post(RatingMixin, models.Model):
 
 
 class PostCategory(models.Model):
-    post = models.ForeignKey(Post, on_delete=models.CASCADE)
+    post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name='categories')
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
 
     def __str__(self):

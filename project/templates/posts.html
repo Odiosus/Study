@@ -13,7 +13,7 @@
             <h4 align="center">Категории</h4><br>
             {% for category in category_list %}
                 <div class="category">
-                    <a id="a{{ category.id }}" class="aCont" href="?{% url_replace category=category.id %}">
+                    <a id="a{{ category.id }}" class="aCont" href="?{% url_replace category=category.id page=1%}">
                     {{ category.name }}</a>
                 </div>
             {% endfor %}
@@ -27,7 +27,6 @@
                     <p>  Автор:</p>
                     <a class="btn hiddenDecoration" id='-1' href="http://127.0.0.1:8000/posts/search/?author={{ posts.first.author.id }}">
                         {{ posts.first.author.authorUser.username }} </a>
-<!--                    onclick="delActiveButton()"-->
                 </div>
                 <p>{{ posts.first.text|truncatewords:110|censor }}</p>
                 <div class="more">

@@ -30,7 +30,6 @@ class PostList(ListView):
         context['filterset'] = self.filterset
         context['category_list'] = Category.objects.order_by('name')
         context['last_comment_list'] = Comment.objects.order_by('-create')[:4]
-        pprint(context)
         return context
 
 

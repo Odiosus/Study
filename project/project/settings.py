@@ -41,13 +41,15 @@ INSTALLED_APPS = [
 
     'django.contrib.sites',
     'django.contrib.flatpages',
-    'news',
+    'news.apps.NewsConfig',
     'django_filters',
 
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
     'allauth.socialaccount.providers.yandex',
+
+    'django_apscheduler',
 ]
 
 MIDDLEWARE = [
@@ -136,7 +138,9 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-SITE_ID =1
+SITE_ID = 1
+
+SITE_URL = 'http://127.0.0.1:8000'
 
 STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
 
@@ -164,3 +168,7 @@ EMAIL_HOST_PASSWORD = "qsrhucnxsjkvcjvs"
 EMAIL_USE_TLS = False
 EMAIL_USE_SSL = True
 DEFAULT_FROM_EMAIL = "capitas.kolesnikov@yandex.ru"
+
+APSCHEDULER_DATETIME_FORMAT = 'N j, Y, f:s a'
+
+APSCHEDULER_RUN_NOW_TIMEOUT = 25

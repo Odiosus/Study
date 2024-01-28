@@ -1,5 +1,5 @@
 {% extends 'flatpages/default.html' %}
-{% load custom_filters %}
+
 {% block title %}
     Subscriptions
 {% endblock title %}
@@ -11,7 +11,7 @@
             <form method="post">
                 {% csrf_token %}
                 <input type="hidden" name="category_id" value="{{ category.id }}">
-                {% if user.id in category|get_subscribers %}
+                {% if user in category.get_sub %}
                     <button disabled>Подписаться</button>
                     <button name="action" value="Unsubscribe">Отписаться</button>
                 {% else %}
