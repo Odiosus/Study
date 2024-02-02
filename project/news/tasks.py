@@ -11,7 +11,16 @@ from django.conf import settings
 
 
 @shared_task
-def notify_new_post(preview, title, subscribers, absolute_url):
+def notify_new_post(pk):
+    new_post = Post.objects.get(pk=pk)
+    categories = new_post.category.all()
+    subscribers = []
+
+    for category in categories:
+        for user in category.get_sub():
+            subscribers.append(user)
+
+    subscribers = set(subscribers)
 
     for subscribe in subscribers:
 
@@ -19,13 +28,13 @@ def notify_new_post(preview, title, subscribers, absolute_url):
             'new_post_notify.html',
             {
                 'user': subscribe,
-                'text': preview,
-                'link': f'{settings.SITE_URL}{absolute_url}'
+                'text': new_post.preview,
+                'link': f'{settings.SITE_URL}{new_post.get_absolute_url()}'
             }
         )
 
         msg = EmailMultiAlternatives(
-            subject=title,
+            subject=new_post.title,
             body='',
             from_email=settings.DEFAULT_FROM_EMAIL,
             to=[subscribe.email],
