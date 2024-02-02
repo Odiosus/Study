@@ -5,30 +5,7 @@ from django.template.loader import render_to_string
 from django.conf import settings
 
 from .models import PostCategory
-
-
-def notify(preview, title, subscribers, absolute_url):
-
-    for subscribe in subscribers:
-
-        html_content = render_to_string(
-            'new_post_notify.html',
-            {
-                'user': subscribe,
-                'text': preview,
-                'link': f'{settings.SITE_URL}{absolute_url}'
-            }
-        )
-
-        msg = EmailMultiAlternatives(
-            subject=title,
-            body='',
-            from_email=settings.DEFAULT_FROM_EMAIL,
-            to=[subscribe.email],
-        )
-
-        msg.attach_alternative(html_content, 'text/html')
-        msg.send()
+from .tasks import notify_new_post
 
 
 @receiver(m2m_changed, sender=PostCategory)
@@ -44,4 +21,4 @@ def new_post(sender, instance, **kwargs):
 
         subscribers = set(subscribers)
 
-        notify(instance.preview(), instance.title, subscribers, absolute_url)
+        notify_new_post(instance.preview(), instance.title, subscribers, absolute_url)

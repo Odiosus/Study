@@ -172,3 +172,9 @@ DEFAULT_FROM_EMAIL = "capitas.kolesnikov@yandex.ru"
 APSCHEDULER_DATETIME_FORMAT = 'N j, Y, f:s a'
 
 APSCHEDULER_RUN_NOW_TIMEOUT = 25
+
+CELERY_BROKER_URL = 'redis://:cU4hOuAoESkSrCLtjFes9Z9R2MUEwnnH@redis-17040.c259.us-central1-2.gce.cloud.redislabs.com:17040/#12118031'
+CELERY_RESULT_BACKEND = 'redis://:cU4hOuAoESkSrCLtjFes9Z9R2MUEwnnH@redis-17040.c259.us-central1-2.gce.cloud.redislabs.com:17040/#12118031'
+CELERY_ACCEPT_CONTENT = ['application/json']
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_RESULT_SERIALIZER = 'json'
