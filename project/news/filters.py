@@ -43,8 +43,6 @@ class PostFilter(FilterSet):
         label='Начиная с',
     )
 
-
-
     type = ChoiceFilter(
         field_name='type',
         choices=Post.CONTENT_LIST,

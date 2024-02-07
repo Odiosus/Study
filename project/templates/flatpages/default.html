@@ -13,6 +13,9 @@
 
     </head>
     <body>
+        {% load cache %}
+        {% cache 3000 header %}
+        {% block header %}
         <header class="header">
             <div>
                 <ul class="menu">
@@ -79,6 +82,8 @@
                 </ul>
             </div>
         </header>
+        {% endblock header %}
+        {% endcache %}
 
         {% block content %}
         {{ flatpage.content }}
