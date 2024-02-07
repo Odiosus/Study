@@ -13,5 +13,7 @@ class PostForm(forms.ModelForm):
         ]
 
 
-class PostFormForStaff(PostForm):
+class PostFormForStaff(PostForm): 
     PostForm.Meta.fields.append('author')
+    
+    
