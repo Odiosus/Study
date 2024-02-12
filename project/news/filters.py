@@ -55,7 +55,7 @@ class PostFilter(FilterSet):
     author = ModelChoiceFilter(              # Буду переписывать, так как авторов (так же как и категорий по сути..)
         field_name='author',                 # может быть огромное количество,
         queryset=Author.objects.all(),       # и список может сильно растянуться, лучше производить поиск
-        label='Автор',                       # с использованием CharFilter
+        label='Автор',                       # с использование м CharFilter
         empty_label='Любой',
     )
 

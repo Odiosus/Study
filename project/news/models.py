@@ -10,10 +10,10 @@ class Author(models.Model):
     def update_rating(self):
         overall_rating = 0
         for i in self.posts.all():
-            overall_rating += (i.rating*3)
+            overall_rating += (i.rating * 3)
             for j in i.comments.all():
                 overall_rating += j.rating
-        for k in Comment.objects.filter(user = self.authorUser.id):
+        for k in Comment.objects.filter(user=self.authorUser.id):
             overall_rating += k.rating
         self.rating = overall_rating
         self.save()

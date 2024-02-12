@@ -12,7 +12,6 @@ from django.db.models import Exists, OuterRef
 from django.views.decorators.csrf import csrf_protect
 
 
-
 class PostList(ListView):
     model = Post
     ordering = '-create'
