@@ -69,6 +69,10 @@ class Post(RatingMixin, models.Model):
     text = models.TextField()
     rating = models.IntegerField(default=0)
 
+    @property
+    def category_list(self):
+        return self.category.values_list('name', flat=True)
+
     def preview(self):
         return f'{self.text[:123]} ... '
 

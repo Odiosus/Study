@@ -10,6 +10,14 @@ from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMix
 from django.contrib.auth.decorators import login_required
 from django.db.models import Exists, OuterRef
 from django.views.decorators.csrf import csrf_protect
+import logging
+
+logger = logging.getLogger(__name__)
+
+def index(request):
+    logger.info('INFO')
+    news = Post.objects.all()
+    return render(request, 'index.html', context={'news': news})
 
 
 class PostList(ListView):

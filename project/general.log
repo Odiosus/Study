@@ -1,0 +1,12 @@
+2024-02-23 11:27:54,654 INFO autoreload Watching for file changes with StatReloader
+2024-02-23 11:29:54,610 INFO autoreload C:\Users\arch\PycharmProjects\NewsPortal\project\project\settings.py changed, reloading.
+2024-02-23 11:29:55,234 INFO autoreload Watching for file changes with StatReloader
+2024-02-23 11:41:31,033 INFO autoreload C:\Users\arch\PycharmProjects\NewsPortal\project\project\settings.py changed, reloading.
+2024-02-23 11:41:57,255 INFO autoreload Watching for file changes with StatReloader
+2024-02-23 11:42:11,780 INFO autoreload C:\Users\arch\PycharmProjects\NewsPortal\project\project\settings.py changed, reloading.
+2024-02-23 11:42:16,269 INFO autoreload Watching for file changes with StatReloader
+2024-02-23 11:42:34,890 WARNING log Not Found: /posts/tp
+2024-02-23 11:42:34,890 WARNING basehttp "GET /posts/tp HTTP/1.1" 404 4881
+2024-02-23 11:42:49,549 INFO autoreload C:\Users\arch\PycharmProjects\NewsPortal\project\project\settings.py changed, reloading.
+2024-02-23 11:42:51,065 INFO autoreload Watching for file changes with StatReloader
+2024-02-23 11:54:05,494 INFO autoreload C:\Users\arch\PycharmProjects\NewsPortal\project\project\settings.py changed, reloading.
