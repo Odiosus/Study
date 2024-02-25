@@ -1,4 +1,8 @@
 <!DOCTYPE html>
+
+{% load i18n %}
+{% load tz %}
+
 <html lang="en">
     <head>
         <meta charset="utf-8" />
@@ -10,6 +14,9 @@
         <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700;800&display=swap" rel="stylesheet">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
         <script defer src="{% static 'script.js' %}"></script>
+            <style>
+        body {background-color: {% if current_time.hour >= 19 or current_time.hour <= 7 %} darkcyan {% else %} powderblue {% endif %};}
+    </style>
 
     </head>
     <body>
@@ -19,7 +26,7 @@
                 {% if user.is_authenticated %}
                     <li><b>{{ user.username }}</b></li>
                     <li><form action="/accounts/logout/" target="_self">
-                        <button class="btn" type="submit">(Выйти)</button>
+                        <button class="btn" type="submit">{% trans '(Выйти)' %}</button>
                     </form></li>
                     {% if user.is_staff %}
                         <li><form action="/admin/" target="_blank">
@@ -28,52 +35,85 @@
                     {% endif %}
                 {% else %}
                     <li><form action="/accounts/login/" target="_self">
-                        <button class="btn" type="submit">Войти</button>
+                        <button class="btn" type="submit">{% trans 'Войти' %}</button>
                     </form></li>
                     <li><form action="/accounts/signup/" target="_self">
-                        <button class="btn" type="submit">Регистрация</button>
+                        <button class="btn" type="submit">{% trans 'Регистрация' %}</button>
                     </form></li>
                 {% endif %}
+                </ul>
+                <ul class="menu">
+                    <form action="{% url 'set_language' %}" method="POST"> {% csrf_token %} <!-- Не забываем по csrf_token для POST запросов -->
+                        <input type="hidden" name="next" value="{{ redirect_to }}">
+                        {% get_current_language as LANGUAGE_CODE %}
+                        <select name="language" id="">
+                            {% get_available_languages as LANGUAGES %} <!-- получаем языки -->
+                            {% get_language_info_list for LANGUAGES as languages %} <!-- Помещаем их в список languages -->
+
+                            {% for language in languages %} <!-- Итерируясь по списку, выводим их название на языке пользователя и код -->
+                                <option value="{{ language.code }}" {% if language.code == LANGUAGE_CODE %} selected {% endif %}>
+                                    {{ language.name_local }} - {{ language.code }}
+                                </option>
+                            {% endfor %}
+                        </select>
+                        <input type="submit" value="set">
+                    </form>
+                </ul>
+                <ul class="menu">
+                    {% get_current_timezone as TIME_ZONE %}
+                    <form action="" method="POST">
+                        {% csrf_token %}
+                        <label for="timezone">Time zone:</label>
+                        <select name="timezone">
+                            {% for tz in timezones %}
+                            <option value="{{ tz }}"{% if tz == TIME_ZONE %} selected{% endif %}>{{ tz }}</option>
+                            {% endfor %}
+                        </select>
+                        <input type="submit" value="Set">
+                    </form>
+
+                    {{ TIME_ZONE }}
+                    {{ current_time|timezone:TIME_ZONE }} <!-- Отображаем время в выбранном часовом поясе  -->
                 </ul>
             </div>
             <hr>
             <div>
                 <ul class="menu">
                     <li><form action="/posts/" target="_self">
-                        <button id="b1" class="btn" type="submit">Все посты</button>
+                        <button id="b1" class="btn" type="submit">{% trans 'Все посты' %}</button>
                     </form></li>
                     <li><form action="/posts/search/" target="_self">
-                        <button id="b2" class="btn" type="submit">Поиск</button>
+                        <button id="b2" class="btn" type="submit">{% trans 'Поиск' %}</button>
                     </form></li>
                     <li><form action="/posts/news/" target="_self">
-                        <button id="b3" class="btn" type="submit">Новости</button>
+                        <button id="b3" class="btn" type="submit">{% trans 'Новости' %}</button>
                     </form></li>
                     <li><form action="/posts/articles/" target="_self">
-                        <button id="b4" class="btn" type="submit">Статьи</button>
+                        <button id="b4" class="btn" type="submit">{% trans 'Статьи' %}</button>
                     </form></li>
 
                     {% if user.is_authenticated %}
                     <li><form action="/posts/subscriptions/" target="_self">
-                            <button id="b9" class="btn" type="submit">Подписки</button>
+                            <button id="b9" class="btn" type="submit">{% trans 'Подписки' %}</button>
                     </form></li>
                     {% endif %}
 
                     {% if perms.news.add_post %}
                     <li>
                         <div class="dropdown">
-                            <button id="b5" class="btn" type="submit">Создать</button>
+                            <button id="b5" class="btn" type="submit">{% trans 'Создать' %}</button>
                             <div class="dropdown-content">
                                 <form action="/posts/news/create/" target="_self">
-                                    <button id="b6" class="btn">Новость</button></form>
+                                    <button id="b6" class="btn">{% trans 'Новость' %}</button></form>
                                 <form action="/posts/articles/create/" target="_self">
-                                    <button id="b7" class="btn">Статья</button></form>
+                                    <button id="b7" class="btn">{% trans 'Статья' %}</button></form>
                             </div>
                         </div>
                     </li>
                     {% endif %}
                     {% if user.is_authenticated and not 'authors' in group_list %}
                         <li><form action="{% url 'upgrade_user' %}" target="_self">
-                            <button class="btn" type="submit">Стать автором</button>
+                            <button class="btn" type="submit">{% trans 'Стать автором' %}</button>
                         </form></li>
                     {% endif %}
                 </ul>

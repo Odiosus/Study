@@ -1,5 +1,7 @@
+import pytz
 from django.contrib.auth.models import Group
 from django.shortcuts import redirect, render
+from django.views import View
 from django.views.generic import ListView, DetailView, CreateView, DeleteView, UpdateView
 from .models import *
 from .forms import *
@@ -11,14 +13,16 @@ from django.contrib.auth.decorators import login_required
 from django.db.models import Exists, OuterRef
 from django.views.decorators.csrf import csrf_protect
 import logging
+from django.utils.translation import gettext as _
+from django.http import HttpResponse
+from django.utils import timezone
 
-logger = logging.getLogger(__name__)
+#logger = logging.getLogger(__name__)
 
-def index(request):
-    logger.info('INFO')
-    news = Post.objects.all()
-    return render(request, 'index.html', context={'news': news})
-
+# def index(request):
+#     logger.info('INFO')
+#     news = Post.objects.all()
+#     return render(request, 'index.html', context={'news': news})
 
 class PostList(ListView):
     model = Post
@@ -37,7 +41,13 @@ class PostList(ListView):
         context['filterset'] = self.filterset
         context['category_list'] = Category.objects.order_by('name')
         context['last_comment_list'] = Comment.objects.order_by('-create')[:4]
+        context['timezones'] = pytz.common_timezones
+        context['current_time'] = timezone.localtime(timezone.now())
         return context
+
+    def post(self, request):
+        request.session['django_timezone'] = request.POST['timezone']
+        return redirect('/posts')
 
 
 class PostSearch(PostList):
