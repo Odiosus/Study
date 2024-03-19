@@ -17,6 +17,9 @@ from django.utils.translation import gettext as _
 from django.http import HttpResponse
 from django.utils import timezone
 
+from .serializers import *
+from rest_framework import viewsets, permissions
+
 #logger = logging.getLogger(__name__)
 
 # def index(request):
@@ -168,3 +171,25 @@ def subscription(request):
         'subscriptions.html',
         {'categories': categories},
     )
+
+
+#====================================================================
+class AuthorViewset(viewsets.ModelViewSet):
+    queryset = Author.objects.all()
+    serializer_class = AuthorSerializer
+class CategoryViewset(viewsets.ModelViewSet):
+    queryset = Category.objects.all()
+    serializer_class = CategorySerializer
+class PostViewset(viewsets.ModelViewSet):
+    queryset = Post.objects.all()
+    serializer_class = PostSerializer
+class PostCategoryViewset(viewsets.ModelViewSet):
+    queryset = PostCategory.objects.all()
+    serializer_class = PostCategorySerializer
+class CommentViewset(viewsets.ModelViewSet):
+    queryset = Comment.objects.all()
+    serializer_class = CommentSerializer
+class SubscriptionsViewset(viewsets.ModelViewSet):
+    queryset = Subscriptions.objects.all()
+    serializer_class = SubscriptionsSerializer
+

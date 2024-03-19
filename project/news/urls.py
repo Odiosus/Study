@@ -1,5 +1,15 @@
-from django.urls import path
+from django.urls import path, include
 from .views import *
+from rest_framework import routers
+
+router = routers.DefaultRouter()
+router.register(r'Author', AuthorViewset)
+router.register(r'Category', CategoryViewset)
+router.register(r'Post', PostViewset)
+router.register(r'PostCategory', PostCategoryViewset)
+router.register(r'Comment', CommentViewset)
+router.register(r'Subscriptions', SubscriptionsViewset)
+
 
 urlpatterns = [
     path('', PostList.as_view(), name='post_list'),
@@ -16,4 +26,7 @@ urlpatterns = [
     path('articles/<int:pk>/delete/', PostDelete.as_view(), name='articles_delete'),
     path('upgrade/', upgrade_user, name='upgrade_user'),
     path('subscriptions/', subscription, name='subscriptions'),
+    path('api/', include(router.urls), name='api'),
 ]
+
+
